@@ -1,0 +1,12 @@
+<%- include('header.ejs') %>
+<h2>상세페이지</h2>
+<div>
+    <p><%= post._id %></p>
+    <p><%= post.title %></p>
+    <p><%= post.dateOfGoals %></p>
+
+    <a href="/update">수정하기</a>
+    <a href="/delete">삭제하기</a>
+    <a href="/list">목록으로 이동</a>
+</div>
+<%- include('footer.ejs') %>
