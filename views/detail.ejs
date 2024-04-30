@@ -5,8 +5,34 @@
     <p><%= post.title %></p>
     <p><%= post.dateOfGoals %></p>
 
-    <a href="/update">수정하기</a>
-    <a href="/delete">삭제하기</a>
+    <a href="/edit/<%= post._id %>">수정하기</a>
+    <button class="delBtn" data-postnum="<%= post._id %>">삭제하기</button>
     <a href="/list">목록으로 이동</a>
 </div>
+
+<script>
+    const delBtn = document.querySelector('.delBtn')
+    delBtn.addEventListener('click', (e)=>{
+        // post 요청으로 delete 작업 수행
+        // fetch().then()
+        fetch('/delete', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                postNum: e.target.dataset.postnum
+            })
+        }).then(res => {
+            // 성공했을 경우 [res.] /list 이동
+            // 실패했을 경우 콘솔창에 '삭제 실패'
+            // console.log(res.ok);
+            if(res.ok){
+                location.href='/list'
+            } else {
+                console.log('삭제 실패');
+            }
+        })
+    })
+</script>
 <%- include('footer.ejs') %>

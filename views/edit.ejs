@@ -1,6 +1,8 @@
 <%- include('header.ejs') %>
-<h2>쓰기페이지</h2>
-<form action="/add" method="post">
+<h2>수정하기</h2>
+<form action="/update" method="post">
+  <input type="hidden" name="_method" value="PUT">
+  <input type="text" name="id" hidden>
   <label>
     <span>할일입력: </span>
     <input type="text" name="title" placeholder="할일입력" required>
@@ -13,30 +15,36 @@
     작성일
     <input type="date" name="today">
   </label>
-  <button class="submitBtn">등록</button>
+  <button class="submitBtn">수정</button>
 </form>
 <p class="alertMessage"></p>
 
 <script>
+  const idInput = document.querySelector('input[name="id"]')
   const titleInput = document.querySelector('input[name="title"]')
   const goalsInput = document.querySelector('input[name="dateOfGoals"]')
   const todayInput = document.querySelector('input[name="today"]')
   const submitBtn = document.querySelector('.submitBtn')
   const alertMessage = document.querySelector('.alertMessage')
 
+  idInput.value = `<%= post._id %>`
+  titleInput.value = `<%= post.title %>`
+  goalsInput.value = `<%= post.dateOfGoals %>`
+
+  let today = new Date().toISOString().slice(0, 10)
+  todayInput.value = today
+
   submitBtn.addEventListener('click', (e)=>{
     e.preventDefault()
+
     let title = titleInput.value
     let dateOfGoals = goalsInput.value
-    let today = new Date().toISOString().slice(0, 10)
-    todayInput.value = today
 
     if(!title || !dateOfGoals){
       alertMessage.innerHTML = '입력해주세요.'
       return
     }
 
-    // dateOfGoals / today - 2024-04-30 => new Date(2024-04-30)
     if(new Date(dateOfGoals) < new Date(today)){
       alertMessage.innerHTML = '오늘 날짜 이후로 선택해주세요.'
       return
